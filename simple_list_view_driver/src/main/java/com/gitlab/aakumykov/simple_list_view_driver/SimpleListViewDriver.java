@@ -1,0 +1,75 @@
+package com.gitlab.aakumykov.simple_list_view_driver;
+
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.core.util.Consumer;
+import androidx.core.util.Supplier;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SimpleListViewDriver {
+
+    private final List<Supplier<String>> mItemsList = new ArrayList<>();
+    private final SimpleArrayAdapter mSimpleArrayAdapter;
+    private final ListView mListView;
+    private boolean mShouldScrollToNewItem = true;
+
+
+    public SimpleListViewDriver(@NonNull ListView listView) {
+
+        mListView  = listView;
+
+        mSimpleArrayAdapter = new SimpleArrayAdapter(
+                listView.getContext(),
+                R.layout.list_item,
+                R.id.titleView,
+                mItemsList
+        );
+
+        listView.setAdapter(mSimpleArrayAdapter);
+    }
+
+
+    public void addItem(Supplier<String> item) {
+        mItemsList.add(item);
+        notifyAndScroll();
+    }
+
+    public void addList(List<Supplier<String>> list) {
+        mItemsList.addAll(list);
+        notifyAndScroll();
+    }
+
+    public void setList(List<Supplier<String>> list) {
+        mItemsList.clear();
+        addList(list);
+    }
+
+
+    public void setOnItemClickListener(final Consumer<Supplier<String>> consumer) {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                consumer.accept(mItemsList.get(position));
+            }
+        });
+    }
+
+
+    public void setScrollToNewItem(boolean b) {
+        mShouldScrollToNewItem = b;
+    }
+
+
+    private void notifyAndScroll() {
+        mSimpleArrayAdapter.notifyDataSetChanged();
+
+        if (mShouldScrollToNewItem)
+            mListView.smoothScrollToPosition(mItemsList.size());
+    }
+
+}

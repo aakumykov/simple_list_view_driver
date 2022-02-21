@@ -3,9 +3,6 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'com.github.aakumykov'
-version = '0.1'
-
 android {
     compileSdk 31
 
@@ -46,7 +43,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.aakumykov'
                 artifactId = 'simple_list_view_driver'
-                version = '0.1'
+                version = 'v0.0.1-alpha'
             }
         }
     }

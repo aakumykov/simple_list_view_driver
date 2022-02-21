@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="element">Элемент %1$d</string>
+    <string name="long_click_on">Длинное нажатие на «%1$s»</string>
+    <string name="click_on">Нажат «%1$s»</string>
+</resources>

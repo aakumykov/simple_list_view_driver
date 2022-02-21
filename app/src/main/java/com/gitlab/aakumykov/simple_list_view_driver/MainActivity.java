@@ -14,17 +14,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(com.gitlab.aakumykov.simple_list_view_driver.R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         SimpleListViewDriver simpleListViewDriver = new SimpleListViewDriver(
-                findViewById(com.gitlab.aakumykov.simple_list_view_driver.R.id.listView)
+                findViewById(R.id.listView)
         );
 
         int b = mCounter++;
         simpleListViewDriver.addItem(() -> "Элемент "+b);
 
-        simpleListViewDriver.setOnItemClickListener(stringSupplier -> {
-            Toast.makeText(this, stringSupplier.get(), Toast.LENGTH_SHORT).show();
+        simpleListViewDriver.setOnItemClickListener(titleItem -> {
+            Toast.makeText(this, titleItem.getTitle(), Toast.LENGTH_SHORT).show();
         });
 
         FloatingActionButton floatingActionButton =

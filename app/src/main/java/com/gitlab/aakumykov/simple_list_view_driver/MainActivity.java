@@ -16,23 +16,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SimpleListViewDriver simpleListViewDriver = new SimpleListViewDriver(
-                findViewById(R.id.listView)
-        );
+        SimpleListViewDriver simpleListViewDriver = new SimpleListViewDriver(findViewById(R.id.listView));
 
         int b = mCounter++;
-        simpleListViewDriver.addItem(() -> "Элемент "+b);
+        simpleListViewDriver.addItem(new ListItem(getString(R.string.element, b)));
 
-        simpleListViewDriver.setOnItemClickListener(titleItem -> {
-            Toast.makeText(this, titleItem.getTitle(), Toast.LENGTH_SHORT).show();
+        simpleListViewDriver.setItemClickListener(titleItem -> {
+            String message = getString(R.string.click_on, titleItem.getTitle());
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         });
 
-        FloatingActionButton floatingActionButton =
-                findViewById(R.id.floatingActionButton);
+        simpleListViewDriver.setItemLongClickListener(titleItem -> {
+            String message = getString(R.string.long_click_on, titleItem.getTitle());
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
 
         floatingActionButton.setOnClickListener(v -> {
             int c = mCounter++;
-            simpleListViewDriver.addItem(() -> "Элемент "+c);
+            simpleListViewDriver.addItem(new ListItem(getString(R.string.element, c)));
         });
     }
 }

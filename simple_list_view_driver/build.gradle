@@ -43,7 +43,7 @@ afterEvaluate {
                 from components.release
                 groupId = 'com.github.aakumykov'
                 artifactId = 'simple_list_view_driver'
-                version = 'v0.0.1-alpha'
+                version = 'v0.0.2-alpha'
             }
         }
     }

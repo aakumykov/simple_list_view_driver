@@ -13,7 +13,7 @@ import java.util.List;
 
 public class SimpleListViewDriver {
 
-    private final List<Supplier<String>> mItemsList = new ArrayList<>();
+    private final List<iTitleItem> mItemsList = new ArrayList<>();
     private final SimpleArrayAdapter mSimpleArrayAdapter;
     private final ListView mListView;
     private boolean mShouldScrollToNewItem = true;
@@ -34,23 +34,23 @@ public class SimpleListViewDriver {
     }
 
 
-    public void addItem(Supplier<String> item) {
+    public void addItem(iTitleItem item) {
         mItemsList.add(item);
         notifyAndScroll();
     }
 
-    public void addList(List<Supplier<String>> list) {
+    public void addList(List<iTitleItem> list) {
         mItemsList.addAll(list);
         notifyAndScroll();
     }
 
-    public void setList(List<Supplier<String>> list) {
+    public void setList(List<iTitleItem> list) {
         mItemsList.clear();
         addList(list);
     }
 
 
-    public void setOnItemClickListener(final Consumer<Supplier<String>> consumer) {
+    public void setOnItemClickListener(final Consumer<iTitleItem> consumer) {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

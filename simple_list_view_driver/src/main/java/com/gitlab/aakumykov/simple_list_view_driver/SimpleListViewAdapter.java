@@ -15,7 +15,7 @@ import java.util.List;
 
 class SimpleArrayAdapter extends ArrayAdapter<String> {
 
-    private final List<Supplier<String>> mItemList;
+    private final List<iTitleItem> mItemList;
 
     private final LayoutInflater mLayoutInflater;
     private final int mLayoutResource;
@@ -24,7 +24,7 @@ class SimpleArrayAdapter extends ArrayAdapter<String> {
     public SimpleArrayAdapter(@NonNull Context context,
                               int layoutResource,
                               int textViewResourceId,
-                              @NonNull List<Supplier<String>> itemList)
+                              @NonNull List<iTitleItem> itemList)
     {
         super(context, layoutResource, textViewResourceId);
 
@@ -47,7 +47,7 @@ class SimpleArrayAdapter extends ArrayAdapter<String> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.titleView.setText(mItemList.get(position).get());
+        viewHolder.titleView.setText(mItemList.get(position).getTitle());
 
         return convertView;
     }

@@ -10,6 +10,6 @@ public class ListItem implements iTitleItem {
 
     @Override
     public String getTitle() {
-        return null;
+        return mTitle;
     }
 }

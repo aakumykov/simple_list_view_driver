@@ -5,15 +5,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.arch.core.util.Function;
 import androidx.core.util.Consumer;
-import androidx.core.util.Supplier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleListViewDriver {
 
-    private final List<iTitleItem> mItemsList = new ArrayList<>();
+    private final List<iTitleItem> mItemList = new ArrayList<>();
     private final SimpleArrayAdapter mSimpleArrayAdapter;
     private final ListView mListView;
     private boolean mShouldScrollToNewItem = true;
@@ -27,7 +27,7 @@ public class SimpleListViewDriver {
                 listView.getContext(),
                 R.layout.list_item,
                 R.id.titleView,
-                mItemsList
+                mItemList
         );
 
         listView.setAdapter(mSimpleArrayAdapter);
@@ -35,30 +35,39 @@ public class SimpleListViewDriver {
 
 
     public void addItem(iTitleItem item) {
-        mItemsList.add(item);
+        mItemList.add(item);
         notifyAndScroll();
     }
 
     public void addList(List<iTitleItem> list) {
-        mItemsList.addAll(list);
+        mItemList.addAll(list);
         notifyAndScroll();
     }
 
     public void setList(List<iTitleItem> list) {
-        mItemsList.clear();
+        mItemList.clear();
         addList(list);
     }
 
 
-    public void setOnItemClickListener(final Consumer<iTitleItem> consumer) {
+    public void setItemClickListener(final Consumer<iTitleItem> consumer) {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                consumer.accept(mItemsList.get(position));
+                consumer.accept(mItemList.get(position));
             }
         });
     }
 
+    public void setItemLongClickListener(final Function<iTitleItem, Boolean> function) {
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                iTitleItem titleItem = mItemList.get(position);
+                return function.apply(titleItem);
+            }
+        });
+    }
 
     public void setScrollToNewItem(boolean b) {
         mShouldScrollToNewItem = b;
@@ -69,7 +78,7 @@ public class SimpleListViewDriver {
         mSimpleArrayAdapter.notifyDataSetChanged();
 
         if (mShouldScrollToNewItem)
-            mListView.smoothScrollToPosition(mItemsList.size());
+            mListView.smoothScrollToPosition(mItemList.size());
     }
 
 }

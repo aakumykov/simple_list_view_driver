@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.UUID;
+
 public class MainActivity extends AppCompatActivity {
 
     private int mCounter = 1;
@@ -19,7 +21,10 @@ public class MainActivity extends AppCompatActivity {
         SimpleListViewDriver simpleListViewDriver = new SimpleListViewDriver(findViewById(R.id.listView));
 
         int b = mCounter++;
-        simpleListViewDriver.addItem(new ListItem(getString(R.string.element, b)));
+        simpleListViewDriver.addItem(new ListItem(
+                UUID.randomUUID().toString(),
+                getString(R.string.element, b)
+        ));
 
         simpleListViewDriver.setItemClickListener(titleItem -> {
             String message = getString(R.string.click_on, titleItem.getTitle());
@@ -36,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
 
         floatingActionButton.setOnClickListener(v -> {
             int c = mCounter++;
-            simpleListViewDriver.addItem(new ListItem(getString(R.string.element, c)));
+            simpleListViewDriver.addItem(new ListItem(
+                    UUID.randomUUID().toString(),
+                    getString(R.string.element, c)
+            ));
         });
     }
 }

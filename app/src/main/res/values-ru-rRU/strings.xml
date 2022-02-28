@@ -3,4 +3,5 @@
     <string name="element">Элемент %1$d</string>
     <string name="long_click_on">Длинное нажатие на «%1$s»</string>
     <string name="click_on">Нажат «%1$s»</string>
+    <string name="scroll_to_new_items">Прокручивать к новым элементам</string>
 </resources>

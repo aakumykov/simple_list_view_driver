@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -39,12 +40,27 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton floatingActionButton = findViewById(R.id.floatingActionButton);
 
+//        SwitchCompat switchCompat = ;
+//        simpleListViewDriver.setScrollToNewItem(switchCompat.isChecked());
+
         floatingActionButton.setOnClickListener(v -> {
             int c = mCounter++;
-            simpleListViewDriver.addItem(new ListItem(
+            ListItem listItem = new ListItem(
                     UUID.randomUUID().toString(),
                     getString(R.string.element, c)
-            ));
+            );
+            simpleListViewDriver.addItem(
+                    listItem,
+                    ((SwitchCompat)findViewById(R.id.scrollToNewItemsSwitch)).isChecked()
+            );
+            simpleListViewDriver.addItem(
+                    listItem,
+                    ((SwitchCompat)findViewById(R.id.scrollToNewItemsSwitch)).isChecked()
+            );
+            simpleListViewDriver.addItem(
+                    listItem,
+                    ((SwitchCompat)findViewById(R.id.scrollToNewItemsSwitch)).isChecked()
+            );
         });
     }
 }

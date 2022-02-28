@@ -13,10 +13,9 @@ import java.util.List;
 
 public class SimpleListViewDriver {
 
-    private final List<iTitleItem> mItemList = new ArrayList<>();
+    private final List<iTitleItem> mItemsList = new ArrayList<>();
     private final SimpleArrayAdapter mSimpleArrayAdapter;
     private final ListView mListView;
-    private boolean mShouldScrollToNewItem = true;
 
 
     public SimpleListViewDriver(@NonNull ListView listView) {
@@ -27,7 +26,7 @@ public class SimpleListViewDriver {
                 listView.getContext(),
                 R.layout.list_item,
                 R.id.titleView,
-                mItemList
+                mItemsList
         );
 
         listView.setAdapter(mSimpleArrayAdapter);
@@ -35,18 +34,35 @@ public class SimpleListViewDriver {
 
 
     public void addItem(iTitleItem item) {
-        mItemList.add(item);
-        notifyAndScroll();
+        mItemsList.add(item);
+        notifyForNewElements(true);
     }
+
+    public void addItem(iTitleItem item, boolean shouldScrollToNewItem) {
+        mItemsList.add(item);
+        notifyForNewElements(shouldScrollToNewItem);
+    }
+
 
     public void addList(List<iTitleItem> list) {
-        mItemList.addAll(list);
-        notifyAndScroll();
+        mItemsList.addAll(list);
+        notifyForNewElements(true);
     }
 
+    public void addList(List<iTitleItem> list, boolean scrollToBottom) {
+        mItemsList.addAll(list);
+        notifyForNewElements(scrollToBottom);
+    }
+
+
     public void setList(List<iTitleItem> list) {
-        mItemList.clear();
+        mItemsList.clear();
         addList(list);
+    }
+
+    public void setList(List<iTitleItem> list, boolean scrollToBottom) {
+        mItemsList.clear();
+        addList(list, scrollToBottom);
     }
 
 
@@ -54,7 +70,7 @@ public class SimpleListViewDriver {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                consumer.accept(mItemList.get(position));
+                consumer.accept(mItemsList.get(position));
             }
         });
     }
@@ -63,22 +79,18 @@ public class SimpleListViewDriver {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                iTitleItem titleItem = mItemList.get(position);
+                iTitleItem titleItem = mItemsList.get(position);
                 return function.apply(titleItem);
             }
         });
     }
 
-    public void setScrollToNewItem(boolean b) {
-        mShouldScrollToNewItem = b;
-    }
 
-
-    private void notifyAndScroll() {
+    private void notifyForNewElements(boolean shouldScrollToNewItem) {
         mSimpleArrayAdapter.notifyDataSetChanged();
 
-        if (mShouldScrollToNewItem)
-            mListView.smoothScrollToPosition(mItemList.size());
+        if (shouldScrollToNewItem)
+            mListView.smoothScrollToPosition(mItemsList.size());
     }
 
 }

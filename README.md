@@ -8,3 +8,5 @@
   * обработчики короткого и длинного нажатий на элемент списка.
 
 Альфа-версия, возможности будут дополняться.
+
+[![](https://jitpack.io/v/aakumykov/simple_list_view_driver.svg)](https://jitpack.io/#aakumykov/simple_list_view_driver)

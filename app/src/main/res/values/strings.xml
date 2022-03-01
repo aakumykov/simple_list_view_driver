@@ -3,7 +3,6 @@
     <string name="element">Item %1$d</string>
     <string name="long_click_on">Long click on «%1$s»</string>
     <string name="click_on">«%1$s» clicked</string>
-    <string name="scroll_to_new_items">Default scroll to new items</string>
-    <string name="add_item_with_scroll">Add and scroll</string>
+    <string name="set_new_list">Set new list</string>
     <string name="add_item">Add item</string>
 </resources>

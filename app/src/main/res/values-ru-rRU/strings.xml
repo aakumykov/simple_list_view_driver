@@ -3,7 +3,6 @@
     <string name="element">Элемент %1$d</string>
     <string name="long_click_on">Длинное нажатие на «%1$s»</string>
     <string name="click_on">Нажат «%1$s»</string>
-    <string name="scroll_to_new_items">Прокручивать к новым элементам по умолчанию</string>
-    <string name="add_item_with_scroll">Добавить с прокруткой</string>
+    <string name="set_new_list">Новый список</string>
     <string name="add_item">Добавить элемент</string>
 </resources>

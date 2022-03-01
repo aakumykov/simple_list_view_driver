@@ -2,20 +2,22 @@ package com.gitlab.aakumykov.simple_list_view_driver;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gitlab.aakumykov.simple_list_view_driver.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private int mCounter = 1;
     private ActivityMainBinding mViewBinding;
     private SimpleListViewDriver mSimpleListViewDriver;
+    private final Random mRandom = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,49 +40,31 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        mSimpleListViewDriver.setDefaultScrollToNewItem(mViewBinding.scrollToNewItemsSwitch.isChecked());
-
-
-        mViewBinding.scrollToNewItemsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mSimpleListViewDriver.setDefaultScrollToNewItem(isChecked);
-            }
-        });
-
-        mViewBinding.addButton.setOnClickListener(this::onAddClicked);
-        mViewBinding.addWithScrollButton.setOnClickListener(this::onAddWithScrollClicked);
+        mViewBinding.addButton.setOnClickListener(this::onAddButtonClicked);
+        mViewBinding.setButton.setOnClickListener(this::onSetButtonClicked);
 
 
         // Добавляю начальный элемент
-        /*int b = mCounter++;
-        mSimpleListViewDriver.addItem(new ListItem(
-                UUID.randomUUID().toString(),
-                getString(R.string.element, b)
-        ));*/
-        onAddWithScrollClicked(null);
+        onSetButtonClicked(null);
     }
 
-    private void onAddClicked(View view) {
-        ListItem listItem = createListItem();
-        for (int i=0; i<3; i++)
-            mSimpleListViewDriver.addItem(listItem);
+    private void onAddButtonClicked(View view) {
+        iTitleItem listItem = createListItem();
+        mSimpleListViewDriver.addItem(listItem);
     }
 
-    private void onAddWithScrollClicked(View view) {
-        ListItem listItem = createListItem();
-        for (int i=0; i<3; i++)
-            mSimpleListViewDriver.addItem(
-                    listItem,
-                    true
-            );
+    private void onSetButtonClicked(View view) {
+        List<iTitleItem> list = new ArrayList<>();
+        int count = new Random().nextInt(20)+10;
+        for (int i=0; i<count; i++)
+            list.add(createListItem());
+        mSimpleListViewDriver.setList(list);
     }
 
-    private ListItem createListItem() {
-        int c = mCounter++;
+    private iTitleItem createListItem() {
         return new ListItem(
                 UUID.randomUUID().toString(),
-                getString(R.string.element, c)
+                getString(R.string.element, mRandom.nextInt(100))
         );
     }
 }

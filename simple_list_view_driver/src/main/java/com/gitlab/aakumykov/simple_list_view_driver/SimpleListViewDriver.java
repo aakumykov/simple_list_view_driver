@@ -92,6 +92,20 @@ public class SimpleListViewDriver {
     }
 
 
+    public void scrollTo(int position) {
+        mListView.smoothScrollToPosition(position);
+    }
+
+    public void scrollToTop() {
+        mListView.smoothScrollToPosition(0);
+    }
+
+    public void scrollToBottom() {
+        mListView.smoothScrollToPosition(mItemsList.size());
+    }
+
+
+
     private void notifyForNewElements() {
         notifyForNewElements(mDefaultScrollToNewItem);
     }

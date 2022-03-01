@@ -16,6 +16,7 @@ public class SimpleListViewDriver {
     private final List<iTitleItem> mItemsList = new ArrayList<>();
     private final SimpleArrayAdapter mSimpleArrayAdapter;
     private final ListView mListView;
+    private boolean mDefaultScrollToNewItem = true;
 
 
     public SimpleListViewDriver(@NonNull ListView listView) {
@@ -35,7 +36,7 @@ public class SimpleListViewDriver {
 
     public void addItem(iTitleItem item) {
         mItemsList.add(item);
-        notifyForNewElements(true);
+        notifyForNewElements();
     }
 
     public void addItem(iTitleItem item, boolean shouldScrollToNewItem) {
@@ -46,7 +47,7 @@ public class SimpleListViewDriver {
 
     public void addList(List<iTitleItem> list) {
         mItemsList.addAll(list);
-        notifyForNewElements(true);
+        notifyForNewElements();
     }
 
     public void addList(List<iTitleItem> list, boolean scrollToBottom) {
@@ -85,6 +86,15 @@ public class SimpleListViewDriver {
         });
     }
 
+
+    public void setDefaultScrollToNewItem(boolean value) {
+        mDefaultScrollToNewItem = value;
+    }
+
+
+    private void notifyForNewElements() {
+        notifyForNewElements(mDefaultScrollToNewItem);
+    }
 
     private void notifyForNewElements(boolean shouldScrollToNewItem) {
         mSimpleArrayAdapter.notifyDataSetChanged();

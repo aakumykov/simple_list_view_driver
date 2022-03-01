@@ -16,7 +16,6 @@ public class SimpleListViewDriver {
     private final List<iTitleItem> mItemsList = new ArrayList<>();
     private final SimpleArrayAdapter mSimpleArrayAdapter;
     private final ListView mListView;
-    private boolean mDefaultScrollToNewItem = true;
 
 
     public SimpleListViewDriver(@NonNull ListView listView) {
@@ -36,7 +35,7 @@ public class SimpleListViewDriver {
 
     public void addItem(iTitleItem item) {
         mItemsList.add(item);
-        notifyForNewElements();
+        notifyForNewElements(true);
     }
 
     public void addItem(iTitleItem item, boolean shouldScrollToNewItem) {
@@ -47,7 +46,7 @@ public class SimpleListViewDriver {
 
     public void addList(List<iTitleItem> list) {
         mItemsList.addAll(list);
-        notifyForNewElements();
+        notifyForNewElements(true);
     }
 
     public void addList(List<iTitleItem> list, boolean scrollToBottom) {
@@ -58,12 +57,14 @@ public class SimpleListViewDriver {
 
     public void setList(List<iTitleItem> list) {
         mItemsList.clear();
-        addList(list);
+        mItemsList.addAll(list);
+        notifyForNewElements(false);
     }
 
     public void setList(List<iTitleItem> list, boolean scrollToBottom) {
         mItemsList.clear();
-        addList(list, scrollToBottom);
+        mItemsList.addAll(list);
+        notifyForNewElements(scrollToBottom);
     }
 
 
@@ -87,11 +88,6 @@ public class SimpleListViewDriver {
     }
 
 
-    public void setDefaultScrollToNewItem(boolean value) {
-        mDefaultScrollToNewItem = value;
-    }
-
-
     public void scrollTo(int position) {
         mListView.smoothScrollToPosition(position);
     }
@@ -104,11 +100,6 @@ public class SimpleListViewDriver {
         mListView.smoothScrollToPosition(mItemsList.size());
     }
 
-
-
-    private void notifyForNewElements() {
-        notifyForNewElements(mDefaultScrollToNewItem);
-    }
 
     private void notifyForNewElements(boolean shouldScrollToNewItem) {
         mSimpleArrayAdapter.notifyDataSetChanged();

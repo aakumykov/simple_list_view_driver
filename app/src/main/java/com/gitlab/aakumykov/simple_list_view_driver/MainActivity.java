@@ -33,12 +33,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void fillViewHolder(TextViewHolder viewHolder, iTitleItem titleItem) {
-                viewHolder.titleView.setText(titleItem.getTitle());
+                String title = titleItem.getTitle();
+                viewHolder.titleView.setText(title);
+                viewHolder.lengthView.setText(String.valueOf(title.length()));
             }
         };
 
         mSimpleListViewDriver = new SimpleListViewDriver<>(
                 findViewById(R.id.listView),
+                R.layout.list_item_main,
                 viewHolderProcessor
         );
 

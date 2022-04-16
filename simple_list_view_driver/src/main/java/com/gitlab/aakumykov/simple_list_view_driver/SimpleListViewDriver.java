@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
 import androidx.core.util.Consumer;
@@ -19,13 +20,14 @@ public class SimpleListViewDriver<T> {
 
 
     public SimpleListViewDriver(@NonNull ListView listView,
+                                @LayoutRes int itemLayoutResource,
                                 @NonNull ViewHolderProcessor<T> viewHolderProcessor
     ) {
         mListView  = listView;
 
         mSimpleArrayAdapter = new SimpleArrayAdapter<T>(
                 listView.getContext(),
-                R.layout.list_item,
+                itemLayoutResource,
                 mItemsList,
                 viewHolderProcessor
         );

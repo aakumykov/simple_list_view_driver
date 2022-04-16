@@ -15,19 +15,32 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityMainBinding mViewBinding;
-    private SimpleListViewDriver mSimpleListViewDriver;
+    private SimpleListViewDriver<TextViewHolder> mSimpleListViewDriver;
     private final Random mRandom = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mViewBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(mViewBinding.getRoot());
+        ActivityMainBinding viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(viewBinding.getRoot());
 
+        ViewHolderProcessor<TextViewHolder> viewHolderProcessor = new ViewHolderProcessor<TextViewHolder>() {
+            @Override
+            public TextViewHolder createViewHolder(View itemView) {
+                return new TextViewHolder(itemView);
+            }
 
-        mSimpleListViewDriver = new SimpleListViewDriver(findViewById(R.id.listView));
+            @Override
+            public void fillViewHolder(TextViewHolder viewHolder, iTitleItem titleItem) {
+                viewHolder.titleView.setText(titleItem.getTitle());
+            }
+        };
+
+        mSimpleListViewDriver = new SimpleListViewDriver<>(
+                findViewById(R.id.listView),
+                viewHolderProcessor
+        );
 
         mSimpleListViewDriver.setItemClickListener(titleItem -> {
             String message = getString(R.string.click_on, titleItem.getTitle());
@@ -40,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        mViewBinding.addButton.setOnClickListener(this::onAddButtonClicked);
-        mViewBinding.setButton.setOnClickListener(this::onSetButtonClicked);
+        viewBinding.addButton.setOnClickListener(this::onAddButtonClicked);
+        viewBinding.setButton.setOnClickListener(this::onSetButtonClicked);
 
 
         // Добавляю начальный элемент

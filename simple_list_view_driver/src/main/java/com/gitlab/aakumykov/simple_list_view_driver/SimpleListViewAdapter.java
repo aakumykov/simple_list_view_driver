@@ -9,45 +9,44 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.Supplier;
 
 import java.util.List;
 
-class SimpleArrayAdapter extends ArrayAdapter<String> {
+class SimpleArrayAdapter<T> extends ArrayAdapter<String> {
 
     private final List<iTitleItem> mItemList;
 
     private final LayoutInflater mLayoutInflater;
     private final int mLayoutResource;
-    private final int mTextViewResourceId;
+    private final ViewHolderProcessor<T> mViewHolderProcessor;
+    private T mViewHolder;
 
     public SimpleArrayAdapter(@NonNull Context context,
                               int layoutResource,
-                              int textViewResourceId,
-                              @NonNull List<iTitleItem> itemList)
+                              @NonNull List<iTitleItem> itemList,
+                              @NonNull ViewHolderProcessor<T> viewHolderProcessor)
     {
-        super(context, layoutResource, textViewResourceId);
+        super(context, layoutResource);
 
         mLayoutInflater = LayoutInflater.from(context);
         mItemList = itemList;
         mLayoutResource = layoutResource;
-        mTextViewResourceId = textViewResourceId;
+        mViewHolderProcessor = viewHolderProcessor;
     }
 
     @NonNull @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        ViewHolder viewHolder;
-
         if (null == convertView) {
             convertView = mLayoutInflater.inflate(mLayoutResource, parent, false);
-            viewHolder = new ViewHolder(convertView, mTextViewResourceId);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+            mViewHolder = mViewHolderProcessor.createViewHolder(convertView);
+            convertView.setTag(mViewHolder);
+        }
+        else {
+            mViewHolder = (T) convertView.getTag();
         }
 
-        viewHolder.titleView.setText(mItemList.get(position).getTitle());
+        mViewHolderProcessor.fillViewHolder(mViewHolder, mItemList.get(position));
 
         return convertView;
     }
@@ -57,7 +56,11 @@ class SimpleArrayAdapter extends ArrayAdapter<String> {
         return mItemList.size();
     }
 
-    private static class ViewHolder {
+    private static abstract class AbstractViewHolder {
+
+    }
+
+    private static class ViewHolder extends AbstractViewHolder {
         TextView titleView;
 
         public ViewHolder(View view, int textViewResourceId) {

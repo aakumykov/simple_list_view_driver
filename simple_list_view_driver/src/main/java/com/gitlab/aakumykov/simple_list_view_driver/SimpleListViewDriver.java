@@ -11,22 +11,23 @@ import androidx.core.util.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleListViewDriver {
+public class SimpleListViewDriver<T> {
 
     private final List<iTitleItem> mItemsList = new ArrayList<>();
-    private final SimpleArrayAdapter mSimpleArrayAdapter;
+    private final SimpleArrayAdapter<T> mSimpleArrayAdapter;
     private final ListView mListView;
 
 
-    public SimpleListViewDriver(@NonNull ListView listView) {
-
+    public SimpleListViewDriver(@NonNull ListView listView,
+                                @NonNull ViewHolderProcessor<T> viewHolderProcessor
+    ) {
         mListView  = listView;
 
-        mSimpleArrayAdapter = new SimpleArrayAdapter(
+        mSimpleArrayAdapter = new SimpleArrayAdapter<T>(
                 listView.getContext(),
                 R.layout.list_item,
-                R.id.titleView,
-                mItemsList
+                mItemsList,
+                viewHolderProcessor
         );
 
         listView.setAdapter(mSimpleArrayAdapter);

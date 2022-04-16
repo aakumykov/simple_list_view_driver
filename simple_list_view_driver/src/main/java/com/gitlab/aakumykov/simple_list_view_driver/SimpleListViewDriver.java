@@ -12,20 +12,20 @@ import androidx.core.util.Consumer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SimpleListViewDriver<T> {
+public class SimpleListViewDriver<V,I> {
 
-    private final List<iTitleItem> mItemsList = new ArrayList<>();
-    private final SimpleArrayAdapter<T> mSimpleArrayAdapter;
+    private final List<I> mItemsList = new ArrayList<>();
+    private final SimpleArrayAdapter<V,I> mSimpleArrayAdapter;
     private final ListView mListView;
 
 
     public SimpleListViewDriver(@NonNull ListView listView,
                                 @LayoutRes int itemLayoutResource,
-                                @NonNull ViewHolderProcessor<T> viewHolderProcessor
+                                @NonNull ViewHolderProcessor<V, I> viewHolderProcessor
     ) {
         mListView  = listView;
 
-        mSimpleArrayAdapter = new SimpleArrayAdapter<T>(
+        mSimpleArrayAdapter = new SimpleArrayAdapter<V,I>(
                 listView.getContext(),
                 itemLayoutResource,
                 mItemsList,
@@ -36,42 +36,42 @@ public class SimpleListViewDriver<T> {
     }
 
 
-    public void addItem(iTitleItem item) {
+    public void addItem(I item) {
         mItemsList.add(item);
         notifyForNewElements(true);
     }
 
-    public void addItem(iTitleItem item, boolean shouldScrollToNewItem) {
+    public void addItem(I item, boolean shouldScrollToNewItem) {
         mItemsList.add(item);
         notifyForNewElements(shouldScrollToNewItem);
     }
 
 
-    public void addList(List<iTitleItem> list) {
+    public void addList(List<I> list) {
         mItemsList.addAll(list);
         notifyForNewElements(true);
     }
 
-    public void addList(List<iTitleItem> list, boolean scrollToBottom) {
+    public void addList(List<I> list, boolean scrollToBottom) {
         mItemsList.addAll(list);
         notifyForNewElements(scrollToBottom);
     }
 
 
-    public void setList(List<iTitleItem> list) {
+    public void setList(List<I> list) {
         mItemsList.clear();
         mItemsList.addAll(list);
         notifyForNewElements(false);
     }
 
-    public void setList(List<iTitleItem> list, boolean scrollToBottom) {
+    public void setList(List<I> list, boolean scrollToBottom) {
         mItemsList.clear();
         mItemsList.addAll(list);
         notifyForNewElements(scrollToBottom);
     }
 
 
-    public void setItemClickListener(final Consumer<iTitleItem> consumer) {
+    public void setItemClickListener(final Consumer<I> consumer) {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -80,11 +80,11 @@ public class SimpleListViewDriver<T> {
         });
     }
 
-    public void setItemLongClickListener(final Function<iTitleItem, Boolean> function) {
+    public void setItemLongClickListener(final Function<I, Boolean> function) {
         mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                iTitleItem titleItem = mItemsList.get(position);
+                I titleItem = mItemsList.get(position);
                 return function.apply(titleItem);
             }
         });

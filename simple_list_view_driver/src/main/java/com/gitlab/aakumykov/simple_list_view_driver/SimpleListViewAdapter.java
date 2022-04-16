@@ -12,19 +12,19 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-class SimpleArrayAdapter<T> extends ArrayAdapter<String> {
+class SimpleArrayAdapter<V, I> extends ArrayAdapter<String> {
 
-    private final List<iTitleItem> mItemList;
+    private final List<I> mItemList;
 
     private final LayoutInflater mLayoutInflater;
     private final int mLayoutResource;
-    private final ViewHolderProcessor<T> mViewHolderProcessor;
-    private T mViewHolder;
+    private final ViewHolderProcessor<V,I> mViewHolderProcessor;
+    private V mViewHolder;
 
     public SimpleArrayAdapter(@NonNull Context context,
                               int layoutResource,
-                              @NonNull List<iTitleItem> itemList,
-                              @NonNull ViewHolderProcessor<T> viewHolderProcessor)
+                              @NonNull List<I> itemList,
+                              @NonNull ViewHolderProcessor<V,I> viewHolderProcessor)
     {
         super(context, layoutResource);
 
@@ -43,7 +43,7 @@ class SimpleArrayAdapter<T> extends ArrayAdapter<String> {
             convertView.setTag(mViewHolder);
         }
         else {
-            mViewHolder = (T) convertView.getTag();
+            mViewHolder = (V) convertView.getTag();
         }
 
         mViewHolderProcessor.fillViewHolder(mViewHolder, mItemList.get(position));

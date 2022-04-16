@@ -15,7 +15,7 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SimpleListViewDriver<TextViewHolder> mSimpleListViewDriver;
+    private SimpleListViewDriver<TextViewHolder, ListItem> mSimpleListViewDriver;
     private final Random mRandom = new Random();
 
     @Override
@@ -25,33 +25,34 @@ public class MainActivity extends AppCompatActivity {
         ActivityMainBinding viewBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
 
-        ViewHolderProcessor<TextViewHolder> viewHolderProcessor = new ViewHolderProcessor<TextViewHolder>() {
+        ViewHolderProcessor<TextViewHolder, ListItem> viewHolderProcessor =
+                new ViewHolderProcessor<TextViewHolder, ListItem>() {
+
             @Override
             public TextViewHolder createViewHolder(View itemView) {
                 return new TextViewHolder(itemView);
             }
 
             @Override
-            public void fillViewHolder(TextViewHolder viewHolder, iTitleItem titleItem) {
-                String title = titleItem.getTitle();
-                viewHolder.titleView.setText(title);
-                viewHolder.lengthView.setText(String.valueOf(title.length()));
+            public void fillViewHolder(TextViewHolder viewHolder, ListItem listItem) {
+                viewHolder.titleView.setText(listItem.getTitle());
+                viewHolder.lengthView.setText(String.valueOf(listItem.getId().length()));
             }
         };
 
-        mSimpleListViewDriver = new SimpleListViewDriver<>(
+        mSimpleListViewDriver = new SimpleListViewDriver<TextViewHolder, ListItem>(
                 findViewById(R.id.listView),
                 R.layout.list_item_main,
                 viewHolderProcessor
         );
 
-        mSimpleListViewDriver.setItemClickListener(titleItem -> {
-            String message = getString(R.string.click_on, titleItem.getTitle());
+        mSimpleListViewDriver.setItemClickListener(listItem -> {
+            String message = getString(R.string.click_on, listItem);
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
         });
 
-        mSimpleListViewDriver.setItemLongClickListener(titleItem -> {
-            String message = getString(R.string.long_click_on, titleItem.getTitle());
+        mSimpleListViewDriver.setItemLongClickListener(listItem -> {
+            String message = getString(R.string.long_click_on, listItem);
             Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
             return true;
         });
@@ -65,19 +66,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onAddButtonClicked(View view) {
-        iTitleItem listItem = createListItem();
+        ListItem listItem = createListItem();
         mSimpleListViewDriver.addItem(listItem);
     }
 
     private void onSetButtonClicked(View view) {
-        List<iTitleItem> list = new ArrayList<>();
+        List<ListItem> list = new ArrayList<>();
+
         int count = new Random().nextInt(20)+10;
+
         for (int i=0; i<count; i++)
             list.add(createListItem());
+
         mSimpleListViewDriver.setList(list);
     }
 
-    private iTitleItem createListItem() {
+    private ListItem createListItem() {
         return new ListItem(
                 UUID.randomUUID().toString(),
                 getString(R.string.element, mRandom.nextInt(100))
